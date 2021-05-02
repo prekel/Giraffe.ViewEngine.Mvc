@@ -4,20 +4,17 @@ open System
 open System.Collections.Generic
 open System.Linq
 open System.Threading.Tasks
-open Giraffe.ViewEngine
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
-open Microsoft.AspNetCore.HttpsPolicy
-open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
-open Microsoft.Extensions.DependencyInjection
-open Giraffe.ViewEngine.Mvc
 
+open Giraffe.ViewEngine.Mvc
+open Giraffe.ViewEngine.Mvc.Sample.Views
+open GiraffeViewManualProvider
 
 type Startup private () =
-    let funToObj (f: _ -> XmlNode) = (fun (o: obj) -> f (o :?> _))
 
     new(configuration: IConfiguration) as this =
         Startup()
@@ -26,9 +23,9 @@ type Startup private () =
     member this.ConfigureServices(services: IServiceCollection) =
         services.AddSingleton<IGiraffeViewProvider>(
             GiraffeViewManualProvider(
-                dict [ ("Home", "Index"), funToObj Giraffe.ViewEngine.Mvc.Sample.Views.Home.Index
-                       ("Home", "Privacy"), funToObj Giraffe.ViewEngine.Mvc.Sample.Views.Home.Privacy
-                       ("Home", "Error"), funToObj Giraffe.ViewEngine.Mvc.Sample.Views.Home.Error ]
+                dict [ ("Home", "Index"), cast Home.Index
+                       ("Home", "Privacy"), cast Home.Privacy
+                       ("Home", "Error"), cast Home.Error ]
             )
         )
         |> ignore
@@ -41,7 +38,6 @@ type Startup private () =
             app.UseDeveloperExceptionPage() |> ignore
         else
             app.UseExceptionHandler("/Home/Error") |> ignore
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts() |> ignore
 
         app.UseHttpsRedirection() |> ignore
@@ -49,15 +45,10 @@ type Startup private () =
 
         app.UseRouting() |> ignore
 
-        //app.UseAuthorization() |> ignore
-
         app.UseEndpoints
             (fun endpoints ->
                 endpoints.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
-                |> ignore
-
-                //endpoints.MapRazorPages() |> ignore
-                )
+                |> ignore)
         |> ignore
 
     member val Configuration: IConfiguration = null with get, set

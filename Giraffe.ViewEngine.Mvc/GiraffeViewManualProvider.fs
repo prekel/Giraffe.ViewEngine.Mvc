@@ -1,11 +1,18 @@
 namespace Giraffe.ViewEngine.Mvc
 
 open System.Collections.Generic
+open Microsoft.AspNetCore.Mvc.ModelBinding
+open Microsoft.AspNetCore.Mvc.ViewFeatures
+
 open Giraffe.ViewEngine
 
-type GiraffeViewManualProvider(map: IDictionary<string * string, obj -> XmlNode>) =
-    let map = map |> Seq.map (|KeyValue|) |> Map.ofSeq
+module GiraffeViewManualProvider =
+    let cast (f: _ -> ViewDataDictionary -> ModelStateDictionary -> XmlNode) = (fun (o: obj) -> f (o :?> _))
+
+type GiraffeViewManualProvider
+    (
+        map: IDictionary<string * string, obj -> ViewDataDictionary -> ModelStateDictionary -> XmlNode>
+    ) =
 
     interface IGiraffeViewProvider with
-        member this.GetFunction(controllerName: string, viewName: string) =
-            map |> Map.find (controllerName, viewName)
+        member this.GetFunction(controllerName: string, viewName: string) = map.[controllerName, viewName]

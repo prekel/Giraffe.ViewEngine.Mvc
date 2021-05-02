@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 namespace ModuleGetter
 {
@@ -7,11 +8,12 @@ namespace ModuleGetter
     {
         static void Main(string[] args)
         {
-            var t = typeof(Giraffe.ViewEngine.Mvc.Sample.Views.HomeModule);
-            var ms = t.GetMethods();
-            var m = ms.First();
-            var y = m.Invoke(null, new object?[1]);
+            var t = typeof(Giraffe.ViewEngine.Mvc.Sample.Views.Home);
+            var a = Assembly.GetAssembly(t);
+            var y = a.DefinedTypes.Where(tp => tp.Namespace == "Giraffe.ViewEngine.Mvc.Sample.Views").ToList();
 
+            
+            
             Console.WriteLine("Hello World!");
         }
     }

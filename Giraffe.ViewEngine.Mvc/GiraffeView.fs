@@ -1,27 +1,16 @@
 namespace Giraffe.ViewEngine.Mvc
 
-open System.Threading.Tasks
-open Giraffe.ViewEngine
+open Microsoft.AspNetCore.Mvc.ModelBinding
 open Microsoft.AspNetCore.Mvc.ViewEngines
-open Giraffe.ViewEngine.Mvc.Sample.Views
+open Microsoft.AspNetCore.Mvc.ViewFeatures
 
-type GiraffeView(renderFunc: obj -> XmlNode) =
+open Giraffe.ViewEngine
+
+type GiraffeView(renderFunc: obj -> ViewDataDictionary -> ModelStateDictionary -> XmlNode) =
     interface IView with
-        member this.Path = "path"
+        member this.Path = ""
 
         member this.RenderAsync(context) =
-            async {
-                let renderData =
-                    { RenderData.Model = context.ViewData.Model
-                      ViewData = context.ViewData
-                      ModelState = context.ModelState }
-
-                let index = renderFunc renderData
-
-                let html =
-                    Giraffe.ViewEngine.RenderView.AsString.htmlDocument index
-
-                return! context.Writer.WriteAsync(html) |> Async.AwaitTask
-            }
-            |> Async.StartAsTask
-            :> Task
+            renderFunc context.ViewData.Model context.ViewData context.ModelState
+            |> Giraffe.ViewEngine.RenderView.AsString.htmlDocument
+            |> context.Writer.WriteAsync
