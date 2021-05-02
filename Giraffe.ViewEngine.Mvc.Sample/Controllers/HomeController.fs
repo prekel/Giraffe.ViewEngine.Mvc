@@ -18,7 +18,7 @@ type HomeController(logger: ILogger<HomeController>) =
 
     member this.Privacy() = this.View()
 
-    //[<ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)>]
+    [<ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)>]
     member this.Error() =
         let reqId =
             if isNull Activity.Current then
