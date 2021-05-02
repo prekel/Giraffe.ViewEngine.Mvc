@@ -5,13 +5,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Models/ErrorViewModel.fs" />
         <Compile Include="Controllers/HomeController.fs" />
         <Compile Include="Startup.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Giraffe.ViewEngine.Mvc.Sample.Models\Giraffe.ViewEngine.Mvc.Sample.Models.fsproj" />
       <ProjectReference Include="..\Giraffe.ViewEngine.Mvc.Sample.Views\Giraffe.ViewEngine.Mvc.Sample.Views.fsproj" />
       <ProjectReference Include="..\Giraffe.ViewEngine.Mvc\Giraffe.ViewEngine.Mvc.fsproj" />
     </ItemGroup>

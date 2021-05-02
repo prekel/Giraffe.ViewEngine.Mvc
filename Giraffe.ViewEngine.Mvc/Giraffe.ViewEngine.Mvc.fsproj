@@ -7,12 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="IGiraffeViewProvider.fs" />
         <Compile Include="GiraffeView.fs" />
         <Compile Include="GiraffeViewEngine.fs" />
         <Compile Include="GiraffeMvcViewOptionsSetup.fs" />
         <Compile Include="MvcViewFeaturesMvcBuilderExtensions.fs" />
-        <Compile Include="GiraffeViewResult.fs" />
-        <Compile Include="GiraffeViewController.fs" />
+        <Compile Include="GiraffeViewManualProvider.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Giraffe.ViewEngine.Mvc.Sample.Views\Giraffe.ViewEngine.Mvc.Sample.Views.fsproj" />
     </ItemGroup>
 
 </Project>

@@ -4,6 +4,7 @@ open System
 open System.Collections.Generic
 open System.Linq
 open System.Threading.Tasks
+open Giraffe.ViewEngine
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.HttpsPolicy
@@ -14,21 +15,24 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Giraffe.ViewEngine.Mvc
 
+
 type Startup private () =
+    let funToObj (f: _ -> XmlNode) = (fun (o: obj) -> f (o :?> _))
+
     new(configuration: IConfiguration) as this =
         Startup()
         then this.Configuration <- configuration
 
     member this.ConfigureServices(services: IServiceCollection) =
-        let t =
-            System.Type.GetType("Giraffe.ViewEngine.Mvc.Sample.Views.Home")
-        let t1 = typeof<Giraffe.ViewEngine.Mvc.Sample.Views.Home>
+        services.AddSingleton<IGiraffeViewProvider>(
+            GiraffeViewManualProvider(
+                dict [ ("Home", "Index"), funToObj Giraffe.ViewEngine.Mvc.Sample.Views.Home.Index
+                       ("Home", "Privacy"), funToObj Giraffe.ViewEngine.Mvc.Sample.Views.Home.Privacy
+                       ("Home", "Error"), funToObj Giraffe.ViewEngine.Mvc.Sample.Views.Home.Error ]
+            )
+        )
+        |> ignore
 
-        let f = Giraffe.ViewEngine.Mvc.Sample.Views.HomeModule.Index.GetType()
-        let y = f.GetType()
-        
-        let q = nameof(Giraffe.ViewEngine.Mvc.Sample.Controllers.HomeController)
-        
         services.AddMvc().AddGiraffeView() |> ignore
 
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
