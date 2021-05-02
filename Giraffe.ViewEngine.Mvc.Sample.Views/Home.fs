@@ -23,6 +23,6 @@ module Home =
     let Error model (viewData: ViewDataDictionary) (modelState: ModelStateDictionary) =
         div [] [
             p [] [ str (string model.RequestId) ]
-            p [] [ str (string model.RequestId) ]
+            p [] [ str (string model.ShowRequestId) ]
             p [] [ str "Error" ]
         ]

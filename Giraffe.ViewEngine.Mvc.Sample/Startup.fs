@@ -23,9 +23,9 @@ type Startup private () =
     member this.ConfigureServices(services: IServiceCollection) =
         services.AddSingleton<IGiraffeViewProvider>(
             GiraffeViewManualProvider(
-                dict [ ("Home", "Index"), cast Home.Index
-                       ("Home", "Privacy"), cast Home.Privacy
-                       ("Home", "Error"), cast Home.Error ]
+                dict [ struct ("Home", "Index"), cast Home.Index
+                       struct ("Home", "Privacy"), cast Home.Privacy
+                       struct ("Home", "Error"), cast Home.Error ]
             )
         )
         |> ignore
@@ -33,7 +33,6 @@ type Startup private () =
         services.AddMvc().AddGiraffeView() |> ignore
 
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
-
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
         else
