@@ -12,10 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\Giraffe.ViewEngine.Mvc.Sample.Views\Giraffe.ViewEngine.Mvc.Sample.Views.fsproj" />
       <ProjectReference Include="..\Giraffe.ViewEngine.Mvc\Giraffe.ViewEngine.Mvc.fsproj" />
     </ItemGroup>
 

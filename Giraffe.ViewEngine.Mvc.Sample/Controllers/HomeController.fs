@@ -14,7 +14,11 @@ open Giraffe.ViewEngine.Mvc.Sample.Models
 type HomeController(logger: ILogger<HomeController>) =
     inherit Controller()
 
-    member this.Index() = this.View()
+    member this.Index() =
+        
+        let rf = Giraffe.ViewEngine.Mvc.Sample.Views.Home.Index
+    
+        this.View()
 
     member this.Privacy() = this.View()
 

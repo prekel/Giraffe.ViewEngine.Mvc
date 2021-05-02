@@ -20,6 +20,15 @@ type Startup private () =
         then this.Configuration <- configuration
 
     member this.ConfigureServices(services: IServiceCollection) =
+        let t =
+            System.Type.GetType("Giraffe.ViewEngine.Mvc.Sample.Views.Home")
+        let t1 = typeof<Giraffe.ViewEngine.Mvc.Sample.Views.Home>
+
+        let f = Giraffe.ViewEngine.Mvc.Sample.Views.HomeModule.Index.GetType()
+        let y = f.GetType()
+        
+        let q = nameof(Giraffe.ViewEngine.Mvc.Sample.Controllers.HomeController)
+        
         services.AddMvc().AddGiraffeView() |> ignore
 
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =

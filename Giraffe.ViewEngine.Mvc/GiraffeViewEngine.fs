@@ -8,13 +8,11 @@ type GiraffeViewEngine() =
             printfn "\nFindView"
             printfn $"%A{context}\n%A{viewName}\n%A{isMainPage}\n"
 
-            //let res = ViewEngineResult.NotFound(viewName, [])
-            let res = ViewEngineResult.Found(viewName, GiraffeView())
-            res
+            let view = GiraffeView()
+            ViewEngineResult.Found(viewName, view)
 
         member this.GetView(executingFilePath, viewPath, isMainPage) =
-            printfn "\nGetView" 
+            printfn "\nGetView"
             printfn $"%A{executingFilePath}\n%A{viewPath}\n%A{isMainPage}\n"
 
-            let res = ViewEngineResult.NotFound(viewPath, [])
-            res
+            ViewEngineResult.NotFound(viewPath, [])
