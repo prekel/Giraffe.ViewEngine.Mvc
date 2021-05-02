@@ -11,23 +11,17 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
+open Microsoft.Extensions.DependencyInjection
+open Giraffe.ViewEngine.Mvc
 
 type Startup private () =
     new(configuration: IConfiguration) as this =
         Startup()
         then this.Configuration <- configuration
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     member this.ConfigureServices(services: IServiceCollection) =
-        // Add framework services.
-        services
-            .AddControllersWithViews()
-            .AddRazorRuntimeCompilation()
-        |> ignore
+        services.AddMvc().AddGiraffeView() |> ignore
 
-        services.AddRazorPages() |> ignore
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
 
         if (env.IsDevelopment()) then
@@ -42,14 +36,15 @@ type Startup private () =
 
         app.UseRouting() |> ignore
 
-        app.UseAuthorization() |> ignore
+        //app.UseAuthorization() |> ignore
 
         app.UseEndpoints
             (fun endpoints ->
                 endpoints.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
                 |> ignore
 
-                endpoints.MapRazorPages() |> ignore)
+                //endpoints.MapRazorPages() |> ignore
+                )
         |> ignore
 
     member val Configuration: IConfiguration = null with get, set
